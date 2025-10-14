@@ -1,0 +1,29 @@
+stages:
+  - build
+  - deploy
+
+build_backend:
+  stage: build
+  script:
+    - docker build -t yaya237/chatbot-backend ./chatbot-backend
+    - docker push yaya237/chatbot-backend
+  only:
+    - main
+
+build_frontend:
+  stage: build
+  script:
+    - docker build -t yaya237/chatbot-frontend ./chatbot-frontend
+    - docker push yaya237/chatbot-frontend
+  only:
+    - main
+
+deploy:
+  stage: deploy
+  script:
+    - eksctl utils write-kubeconfig --cluster=chatbot-cluster --region us-east-1
+    - kubectl apply -f backend-deployment.yaml
+    - kubectl apply -f frontend-deployment.yaml
+  only:
+    - main
+
