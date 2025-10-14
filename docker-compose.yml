@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  backend:
+    image: chatbot-backend
+    build:
+      context: ./chatbot-backend
+    container_name: chatbot-backend
+    ports:
+      - "8081:8080"  # 8080 dans le conteneur, exposé sur 8081 sur ton Mac
+    networks:
+      - chatbot-network
+
+  frontend:
+    image: chatbot-frontend
+    build:
+      context: ./chatbot-frontend
+    container_name: chatbot-frontend
+    ports:
+      - "3000:80"    # NGINX dans le conteneur sur 80, exposé sur 3000 sur ton Mac
+    networks:
+      - chatbot-network
+    environment:
+      - REACT_APP_API_URL=http://backend:8080  # URL backend dans Docker
+
+networks:
+  chatbot-network:
+    driver: bridge
+
