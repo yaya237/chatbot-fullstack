@@ -17,6 +17,9 @@ stages:
 # ----------------------------
 build_backend:
   stage: build
+  image: docker:20
+  services:
+    - docker:20-dind
   script:
     - echo "$DOCKERHUB_TOKEN" | docker login -u "trulyahya" --password-stdin
     - docker build -t trulyahya/chatbot-backend ./chatbot-backend
@@ -29,6 +32,9 @@ build_backend:
 # ----------------------------
 build_frontend:
   stage: build
+  image: docker:20
+  services:
+    - docker:20-dind
   script:
     - echo "$DOCKERHUB_TOKEN" | docker login -u "trulyahya" --password-stdin
     - docker build -t trulyahya/chatbot-frontend ./chatbot-frontend
@@ -42,19 +48,19 @@ build_frontend:
 deploy:
   stage: deploy
   image:
-    name: amazon/aws-cli:2.14.5  # AWS CLI + kubectl
+    name: amazon/aws-cli:2.14.5
     entrypoint: [""]
   before_script:
     # Configurer AWS CLI
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
     - aws configure set default.region $AWS_DEFAULT_REGION
-    # Installer kubectl si nécessaire
+    # Installer kubectl
     - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
     - chmod +x kubectl
     - mv kubectl /usr/local/bin/
     # Configurer kubeconfig pour EKS
-    - aws eks update-kubeconfig --name your-cluster-name
+    - aws eks update-kubeconfig --name chatbot-cluster
   script:
     # Déploiement backend + frontend
     - kubectl apply -f backend-deployment.yaml
