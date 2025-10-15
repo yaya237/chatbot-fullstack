@@ -1,8 +1,20 @@
+image: docker:20
+
+services:
+  - docker:20-dind
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+  KUBECONFIG: "/kube/config"
+
 stages:
   - build
   - deploy
 
-# Étape 1 : Build & Push du backend
+# ----------------------------
+# Étape 1 : Build & Push Backend
+# ----------------------------
 build_backend:
   stage: build
   script:
@@ -12,7 +24,9 @@ build_backend:
   only:
     - main
 
-# Étape 2 : Build & Push du frontend
+# ----------------------------
+# Étape 2 : Build & Push Frontend
+# ----------------------------
 build_frontend:
   stage: build
   script:
@@ -22,12 +36,29 @@ build_frontend:
   only:
     - main
 
-# Étape 3 : Déploiement manuel (plus tard)
+# ----------------------------
+# Étape 3 : Déploiement sur EKS
+# ----------------------------
 deploy:
   stage: deploy
+  image:
+    name: amazon/aws-cli:2.14.5  # AWS CLI + kubectl
+    entrypoint: [""]
+  before_script:
+    # Configurer AWS CLI
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws configure set default.region $AWS_DEFAULT_REGION
+    # Installer kubectl si nécessaire
+    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    - chmod +x kubectl
+    - mv kubectl /usr/local/bin/
+    # Configurer kubeconfig pour EKS
+    - aws eks update-kubeconfig --name your-cluster-name
   script:
-    - echo "Déploiement manuel à faire plus tard"
-  when: manual
+    # Déploiement backend + frontend
+    - kubectl apply -f backend-deployment.yaml
+    - kubectl apply -f frontend-deployment.yaml
   only:
     - main
 
