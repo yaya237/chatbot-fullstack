@@ -2,7 +2,7 @@ stages:
   - build
   - deploy
 
-# Étape 1 : Connexion Docker + Build & Push du backend
+# Étape 1 : Build & Push du backend
 build_backend:
   stage: build
   script:
@@ -22,7 +22,7 @@ build_frontend:
   only:
     - main
 
-# Étape 3 : (optionnelle pour l’instant) Déploiement manuel
+# Étape 3 : Déploiement manuel (plus tard)
 deploy:
   stage: deploy
   script:
