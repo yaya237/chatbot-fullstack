@@ -13,13 +13,13 @@ spec:
         app: backend
     spec:
       containers:
-      - name: backend
-        image: trulyahya/chatbot-backend:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8080   # <-- ici on met 8080 (et non 5000)
+        - name: backend
+          image: trulyahya/chatbot-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
       imagePullSecrets:
-      - name: regcred
+        - name: regcred
 ---
 apiVersion: v1
 kind: Service
@@ -28,7 +28,7 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - port: 8080          # <-- ici aussi on expose 8080
-    targetPort: 8080    # <-- on mappe vers le port interne
+    - port: 8080
+      targetPort: 8080
   selector:
     app: backend
