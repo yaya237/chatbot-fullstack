@@ -2,22 +2,27 @@ stages:
   - build
   - deploy
 
+# Étape 1 : Build & Push du backend
 build_backend:
   stage: build
   script:
-    - docker build -t yaya237/chatbot-backend ./chatbot-backend
-    - docker push yaya237/chatbot-backend
+    - docker build -t trulyahya/chatbot-backend ./chatbot-backend
+    - echo "$DOCKERHUB_TOKEN" | docker login -u "trulyahya" --password-stdin
+    - docker push trulyahya/chatbot-backend
   only:
     - main
 
+# Étape 2 : Build & Push du frontend
 build_frontend:
   stage: build
   script:
-    - docker build -t yaya237/chatbot-frontend ./chatbot-frontend
-    - docker push yaya237/chatbot-frontend
+    - docker build -t trulyahya/chatbot-frontend ./chatbot-frontend
+    - echo "$DOCKERHUB_TOKEN" | docker login -u "trulyahya" --password-stdin
+    - docker push trulyahya/chatbot-frontend
   only:
     - main
 
+# Étape 3 : Déploiement sur ton cluster EKS
 deploy:
   stage: deploy
   script:
