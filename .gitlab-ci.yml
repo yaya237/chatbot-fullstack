@@ -2,12 +2,12 @@ stages:
   - build
   - deploy
 
-# Étape 1 : Build & Push du backend
+# Étape 1 : Connexion Docker + Build & Push du backend
 build_backend:
   stage: build
   script:
-    - docker build -t trulyahya/chatbot-backend ./chatbot-backend
     - echo "$DOCKERHUB_TOKEN" | docker login -u "trulyahya" --password-stdin
+    - docker build -t trulyahya/chatbot-backend ./chatbot-backend
     - docker push trulyahya/chatbot-backend
   only:
     - main
@@ -16,19 +16,18 @@ build_backend:
 build_frontend:
   stage: build
   script:
-    - docker build -t trulyahya/chatbot-frontend ./chatbot-frontend
     - echo "$DOCKERHUB_TOKEN" | docker login -u "trulyahya" --password-stdin
+    - docker build -t trulyahya/chatbot-frontend ./chatbot-frontend
     - docker push trulyahya/chatbot-frontend
   only:
     - main
 
-# Étape 3 : Déploiement sur ton cluster EKS
+# Étape 3 : (optionnelle pour l’instant) Déploiement manuel
 deploy:
   stage: deploy
   script:
-    - eksctl utils write-kubeconfig --cluster=chatbot-cluster --region us-east-1
-    - kubectl apply -f backend-deployment.yaml
-    - kubectl apply -f frontend-deployment.yaml
+    - echo "Déploiement manuel à faire plus tard"
+  when: manual
   only:
     - main
 
