@@ -18,6 +18,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+          env:
+            - name: REACT_APP_BACKEND_URL
+              value: "http://aa8ce2e1ead214341a15bdeca2e4a7e0-1116609328.us-east-1.elb.amazonaws.com:8080"
       imagePullSecrets:
         - name: regcred
 ---
@@ -32,4 +35,3 @@ spec:
       targetPort: 80
   selector:
     app: frontend
-

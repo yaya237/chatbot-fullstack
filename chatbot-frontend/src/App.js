@@ -13,6 +13,8 @@ function App() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://aa8ce2e1ead214341a15bdeca2e4a7e0-1116609328.us-east-1.elb.amazonaws.com:8080';
+
   const sendMessage = async (msg) => {
     if (!msg.trim()) return;
 
@@ -20,11 +22,14 @@ function App() {
     setInput('');
 
     try {
-      const res = await fetch('http://localhost:8080/api/chat', {
+      const res = await fetch(`${BACKEND_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: msg })
       });
+
+      if (!res.ok) throw new Error('Erreur backend');
+
       const data = await res.json();
       setMessages(prev => [...prev, { sender: 'bot', text: data.reply, suggestions: data.suggestions }]);
     } catch (err) {
