@@ -22,8 +22,8 @@ build_backend:
     - docker:20-dind
   script:
     - echo "$DOCKERHUB_TOKEN" | docker login -u "trulyahya" --password-stdin
-    - docker build -t trulyahya/chatbot-backend ./chatbot-backend
-    - docker push trulyahya/chatbot-backend
+    - docker build -t trulyahya/chatbot-backend:latest ./chatbot-backend
+    - docker push trulyahya/chatbot-backend:latest
   only:
     - main
 
@@ -37,8 +37,9 @@ build_frontend:
     - docker:20-dind
   script:
     - echo "$DOCKERHUB_TOKEN" | docker login -u "trulyahya" --password-stdin
-    - docker build -t trulyahya/chatbot-frontend ./chatbot-frontend
-    - docker push trulyahya/chatbot-frontend
+    # Rebuild frontend avec REACT_APP_API_URL injectée
+    - docker build --build-arg REACT_APP_API_URL=http://backend-service:8080 -t trulyahya/chatbot-frontend:latest ./chatbot-frontend
+    - docker push trulyahya/chatbot-frontend:latest
   only:
     - main
 
@@ -62,9 +63,12 @@ deploy:
     # Configurer kubeconfig pour EKS
     - aws eks update-kubeconfig --name chatbot-cluster
   script:
-    # Déploiement backend + frontend
-    - kubectl apply -f backend-deployment.yaml
-    - kubectl apply -f frontend-deployment.yaml
+    # Déploiement backend + frontend avec image latest
+    - kubectl set image deployment/chatbot-backend backend=trulyahya/chatbot-backend:latest
+    - kubectl set image deployment/chatbot-frontend frontend=trulyahya/chatbot-frontend:latest
+    - kubectl rollout restart deployment chatbot-backend
+    - kubectl rollout restart deployment chatbot-frontend
+    - kubectl rollout status deployment/chatbot-backend
+    - kubectl rollout status deployment/chatbot-frontend
   only:
     - main
-
