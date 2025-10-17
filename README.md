@@ -187,13 +187,9 @@ Ingénieur passionné par la **cybersécurité**, le **cloud computing** et les 
 J’accorde une grande importance au **travail en équipe**, à la **rigueur** et à la **curiosité technique**.
 Ce projet illustre ma volonté de **concevoir des systèmes fiables, scalables et sécurisés** dans un environnement cloud moderne.
 
-📫 Contact : [LinkedIn](https://www.linkedin.com/in/yahya-bougna) — [GitHub](https://github.com/yaya237)
+📫 Contact : [LinkedIn](https://www.linkedin.com/in/yahya-bougna-79609a255?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BG80FIMuUSGudpetW7bbiuw%3D%3D) — [GitHub](https://github.com/yaya237)
 
 ---
 
 > 💡 *Ce projet personnel m’a permis d’explorer le cycle complet du DevOps — de la conception à la supervision — tout en consolidant mes compétences en développement fullstack et en infrastructure cloud.*
-
-```
-
----
 
