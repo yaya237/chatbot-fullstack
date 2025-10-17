@@ -14,12 +14,7 @@ Sur le plan de l’infrastructure, j’automatise les déploiements et les confi
 Le projet repose sur AWS pour la première version et sur Azure pour la suivante, afin de comparer la flexibilité, la sécurité et la gestion des ressources entre les deux environnements. J’y intègre également des pipelines CI/CD GitLab pour automatiser les livraisons continues et renforcer la fiabilité du processus de mise à jour.
 Ce projet constitue une excellente opportunité pour approfondir mes compétences en développement full-stack tout en maîtrisant l’écosystème DevOps dans sa globalité — de l’automatisation et la sécurité jusqu’à l’optimisation des performances et la gestion d’infrastructures cloud.
 
-Super Yahya 👍
-Voici la version complète, claire et professionnelle de ton **`README.md`**, dans un ton à la fois **pédagogique et impressionnant** — idéale pour ton GitHub et ton portfolio :
 
----
-
-```markdown
 # 🤖 Chatbot Fullstack — React, Node.js & DevOps on AWS EKS
 
 ## 🚀 Introduction
@@ -218,8 +213,4 @@ Ce projet illustre ma volonté de **concevoir des systèmes fiables, scalables e
 ```
 
 ---
-
-Souhaites-tu que je te rédige maintenant le **plan du Wiki GitHub** (avec le contenu de chaque page, prêt à copier-coller dans la section Wiki) ?  
-Ce serait la suite logique pour renforcer ton profil devant les recruteurs.
-```
 
